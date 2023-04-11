@@ -1,11 +1,19 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useRef, useContext } from 'react'
 import googleIcon from '../../assets/google.png'
 import Input from './input'
 import { BsFillArrowLeftCircleFill } from 'react-icons/bs'
+import axios from 'axios'
+import ClipLoader from "react-spinners/ClipLoader";
+import AuthContext from '../../context/auth/authContext'
 
 const ModalAuth = ({ isModalOpen, setIsModalOpen }) => {
     const [ registerIsOpen, setRegisterIsOpen ] = useState(false)
+    const [ isLoading , setIsLoading ] = useState(false)
+    const [ error, setError ] = useState(null)
+    const { login } = useContext(AuthContext);
+    const formLogin = useRef(null)
+    const formRegister = useRef(null)
 
     const toggleRegister = () => {
         setRegisterIsOpen(!registerIsOpen)
@@ -14,6 +22,46 @@ const ModalAuth = ({ isModalOpen, setIsModalOpen }) => {
     const closeModal = () => {
         setIsModalOpen(false)
     }
+
+    const loginHandler = (e) => {
+        e.preventDefault()
+        setError(null)
+        setIsLoading(true)
+        login(
+            formLogin.current[0].value,
+            formLogin.current[1].value,
+            setIsModalOpen,
+            setIsLoading,
+            setError
+        )
+    }
+
+
+    const register = (e) => {
+      e.preventDefault()
+      setError(null)
+      setIsLoading(true)
+      axios.post('http://localhost:3000/auth/register',
+        {
+          email: formRegister.current[0].value,
+          firstname: formRegister.current[1].value,
+          lastname: formRegister.current[2].value,
+          numberPhone: formRegister.current[3].value,
+          password: formRegister.current[4].value
+        }
+      )
+      .then((res) => {
+          console.log(res)
+          setIsModalOpen(false)
+      })
+      .catch((err) => {
+          console.log(err);
+          setError(err.response.data.message[0])
+      })
+      .finally(() => {
+          setIsLoading(false)
+      })
+  }
 
     return (
         <>
@@ -45,12 +93,12 @@ const ModalAuth = ({ isModalOpen, setIsModalOpen }) => {
                     <Dialog.Panel className="h-[550px] flex flex-col justify-evenly items-end max-w-md transform overflow-hidden rounded-2xl bg-white p-10 text-left align-middle shadow-xl transition-all"> 
                         {
                             registerIsOpen ? (
-                                <div className='w-full h-full flex flex-col justify-evenly items-center'>
+                                <div className='w-full h-1/2 flex flex-col justify-evenly items-center'>
                                     <div className='w-full flex justify-start'>
                                         <BsFillArrowLeftCircleFill className='text-3xl cursor-pointer text-red-600' onClick={toggleRegister} />
                                     </div>
-                                    <h1 className='w-full text-center text-4xl font-medium'>Register</h1>
-                                    <form className=' w-full'>
+                                    <h1 className='mb-5 w-full text-center text-4xl font-medium'>Register</h1>
+                                    <form ref={formRegister} onSubmit={register} className=' w-full'>
                                         <Input
                                             placeholder='Email'
                                             type="text"
@@ -81,15 +129,30 @@ const ModalAuth = ({ isModalOpen, setIsModalOpen }) => {
                                             name=""
                                             id="" 
                                         />
-                                        <button className='mt-3 w-full h-12 rounded-3xl bg-red-600 text-white flex justify-evenly items-center shadow-lg'>
-                                            Register
+                                        <button
+                                          type='submit'
+                                          className='mt-3 w-full h-12 rounded-3xl bg-red-600 text-white flex justify-evenly items-center shadow-lg'>
+                                            {
+                                              isLoading ? (
+                                                <ClipLoader color='#fff' size={20} />
+                                              ) : (
+                                                'register'
+                                              )
+                                            }
                                         </button>
+                                        {
+                                            error && (
+                                              <div className='w-full flex justify-center mt-2 font-bold'>
+                                                <h1>{error}</h1>
+                                              </div>
+                                            )
+                                        }
                                     </form>
                                 </div>
                             ) : (
                                 <div className='w-full h-full flex flex-col justify-evenly items-center'>
                                     <h1 className='w-full text-center text-4xl font-medium'>Sign in</h1>
-                                    <form className='h-1/3 w-full'>
+                                    <form onSubmit={loginHandler} ref={formLogin} className='h-1/3 w-full'>
                                         <Input
                                             placeholder='Email'
                                             type="text"
@@ -98,12 +161,14 @@ const ModalAuth = ({ isModalOpen, setIsModalOpen }) => {
                                         />
                                         <Input
                                             placeholder='Password' 
-                                            type="text"
+                                            type="password"
                                             name=""
                                             id="" 
                                         />
-                                        <button className='mt-3 w-full h-12 rounded-3xl bg-red-600 text-white flex justify-evenly items-center shadow-lg'>
-                                            Sign in
+                                        <button 
+                                          type='submit'
+                                          className='mt-3 w-full h-12 rounded-3xl bg-red-600 text-white flex justify-evenly items-center shadow-lg'>
+                                          Login
                                         </button>
                                     </form>
                                     <p className='w-full text-right text-sm cursor-pointer mt-2'>Forgot Password?</p>
