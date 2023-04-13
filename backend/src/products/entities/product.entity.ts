@@ -5,24 +5,24 @@ import { Category } from 'src/categories/entities/category.entity';
 export class Product {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    
-    @Column({ length: 30 })
+
+    @Column({ length: 30, unique: true, nullable: false })
     title: string;
 
-    @Column({ length: 60 })
+    @Column({ length: 60, nullable: false })
     description: string;
-    
-    @Column('text')
+
+    @Column('text', { nullable: false })
     price: string;
 
-    @Column('text')
+    @Column('text', { nullable: false })
     image: string;
 
     @Column({ default: 0 })
     ofert: number;
 
     //category
-    @ManyToOne(() => Category, category => category.products)
+    @ManyToOne(() => Category, (category) => category.products)
     category: Category;
 
     @Column({ default: true })

@@ -6,14 +6,14 @@ import { User } from 'src/users/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [ 
-    TypeOrmModule.forFeature([User]),
-    JwtModule.register({
-      secret: 'secret',
-      signOptions: { expiresIn: '1d' },
-    }),
-  ],
-  controllers: [AuthController],
-  providers: [AuthService],
+    imports: [
+        TypeOrmModule.forFeature([User]),
+        JwtModule.register({
+            secret: 'secret',
+            signOptions: { expiresIn: '1d' },
+        }),
+    ],
+    controllers: [AuthController],
+    providers: [AuthService],
 })
 export class AuthModule {}

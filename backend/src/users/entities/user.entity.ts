@@ -4,20 +4,20 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    
-    @Column({ length: 30 })
+
+    @Column({ length: 30, nullable: false })
     firstname: string;
 
-    @Column({ length: 30 })
+    @Column({ length: 30, nullable: false })
     lastname: string;
-    
-    @Column('text')
+
+    @Column('text', { nullable: false, unique: true })
     email: string;
 
-    @Column('text')
+    @Column('text', { nullable: false })
     numberPhone: string;
 
-    @Column()
+    @Column({ nullable: false })
     password: string;
 
     @Column({ default: null })

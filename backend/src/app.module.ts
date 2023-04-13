@@ -13,23 +13,23 @@ import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 
 @Module({
-  imports: [
-    UsersModule, 
-    AuthModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'valentin',
-      password: 'valentin',
-      database: 'ecommerce',
-      entities: [ User, Category, Product ],
-      synchronize: true,
-    }),
-    ProductsModule,
-    CategoriesModule
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        UsersModule,
+        AuthModule,
+        TypeOrmModule.forRoot({
+            type: 'mysql',
+            host: 'localhost',
+            port: 3306,
+            username: 'valentin',
+            password: 'valentin',
+            database: 'ecommerce',
+            entities: [User, Category, Product],
+            synchronize: true,
+        }),
+        ProductsModule,
+        CategoriesModule,
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}

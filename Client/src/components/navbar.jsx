@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import logo from '../assets/logo.png';
 import { HiShoppingBag } from 'react-icons/hi';
+import { AiOutlineUser, AiOutlineSearch } from 'react-icons/ai';
 import { BsCart2 } from 'react-icons/bs';
 import ModalAuth from './auth/modalAuth';
 import AuthContext from "../context/auth/authContext";
 import noProfile from '../assets/noProfile.png'
 import api from '../api/config'
+import SearchInput from './SearchInput';
 
 const Navbar = () => {
     const { isAuthenticated, verify, logout } = useContext(AuthContext);
@@ -92,8 +94,9 @@ const Navbar = () => {
                     !isAuth && (
                         <button 
                             onClick={toggleModal}
-                            className={`${scroll ? 'bg-white text-red-600' :'bg-red-600 text-white'} px-5 py-2 rounded-md hover:-translate-y-2 transition-all shadow-lg`}>
-                            Login
+                            className='flex text-sm items-center gap-1'>
+                            <AiOutlineUser className='text-2xl text-green-600'/>
+                            Account
                         </button>
                     )
                 }
@@ -105,29 +108,30 @@ const Navbar = () => {
     }
     
     return (
-        <div className={`fixed ${scroll ? 'bg-red-600 opacity-95 text-white' : null } transition-colors z-50 h-16 w-full flex justify-evenly items-center font-medium text-lg`}>
-            <div className='flex items-center'>
-                {/* <img src={logo} alt="logo" className='sm:w-[90px] sm:h-[80px] lg:w-[120px] lg:h-[100px] cursor-pointer'/> */}
-                <HiShoppingBag className={`text-5xl mr-2  ${scroll ? 'text-white' : 'text-red-600'}`}/>
-                <h1 className={`text-medium ${scroll ? 'text-white' : 'text-red-600'} text-red-600 lg:text-2xl`}>Ecommerce</h1>
-            </div>
-            <nav>
-                <ul className='flex lg:text-md'>
-                    <li className='cursor-pointer lg:mr-10 mr-4 hover:-translate-y-2 transition-all hover:border-b-2 hover:border-b-red-600'>Home</li>
-                    <li className='cursor-pointer lg:mr-10 mr-4 hover:-translate-y-2 transition-all hover:border-b-2 hover:border-b-red-600'>Shop</li>
-                    <li className='cursor-pointer lg:mr-10 mr-4 hover:-translate-y-2 transition-all hover:border-b-2 hover:border-b-red-600'>Contact</li>
-                </ul>
-            </nav>
-            <div className='flex items-center'>
-                <div className={`p-2 ${scroll ? 'hover:bg-white hover:text-red-600' : 'hover:bg-red-600'} hover:text-white rounded-full mr-5 transition-all`}>
-                    <BsCart2 className='text-2xl' />
+        <div className={`${ scroll ? 'fixed' : ''} bg-white transition-colors z-50 h-20 w-full flex justify-evenly items-center font-medium text-lg`}>
+                <div className='flex items-center'>
+                    <HiShoppingBag className='text-5xl mr-2 text-green-600'/>
+                    <h1 className='text-medium text-green-600 lg:text-2xl'>Ecommerce</h1>
                 </div>
-                <IsAuth isAuth={isAuthenticated} toggleModal={toggleModal} logout={logout} />
+                <nav>
+                    <ul className='flex text-sm'>
+                        <li className='cursor-pointer lg:mr-10 mr-4 hover:-translate-y-2 transition-all hover:border-b-2 hover:border-b-green-600'>Categories</li>
+                        <li className='cursor-pointer lg:mr-10 mr-4 hover:-translate-y-2 transition-all hover:border-b-2 hover:border-b-green-600'>Shop</li>
+                        <li className='cursor-pointer lg:mr-10 mr-4 hover:-translate-y-2 transition-all hover:border-b-2 hover:border-b-green-600'>Contact</li>
+                    </ul>
+                </nav>
+                <SearchInput />
+                <div className='flex items-center gap-5'>
+                    <IsAuth isAuth={isAuthenticated} toggleModal={toggleModal} logout={logout} />
+                    <div className='flex items-center p-2 gap-2 rounded-full transition-all'>
+                        <BsCart2 className='text-2xl text-green-600' />
+                        <span className='text-sm'>Cart</span>
+                    </div>
+                </div>
+                {
+                    isModalOpen && <ModalAuth isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+                }
             </div>
-            {
-                isModalOpen && <ModalAuth isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
-            }
-        </div>
     )
 }
 

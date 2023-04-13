@@ -66,7 +66,7 @@ const ModalAuth = ({ isModalOpen, setIsModalOpen }) => {
     return (
         <>
           <Transition appear show={isModalOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={closeModal}>
+            <Dialog as="div" className="relative z-50" onClose={closeModal}>
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -95,7 +95,7 @@ const ModalAuth = ({ isModalOpen, setIsModalOpen }) => {
                             registerIsOpen ? (
                                 <div className='w-full h-1/2 flex flex-col justify-evenly items-center'>
                                     <div className='w-full flex justify-start'>
-                                        <BsFillArrowLeftCircleFill className='text-3xl cursor-pointer text-red-600' onClick={toggleRegister} />
+                                        <BsFillArrowLeftCircleFill className='text-3xl cursor-pointer text-green-600' onClick={toggleRegister} />
                                     </div>
                                     <h1 className='mb-5 w-full text-center text-4xl font-medium'>Register</h1>
                                     <form ref={formRegister} onSubmit={register} className=' w-full'>
@@ -131,7 +131,7 @@ const ModalAuth = ({ isModalOpen, setIsModalOpen }) => {
                                         />
                                         <button
                                           type='submit'
-                                          className='mt-3 w-full h-12 rounded-3xl bg-red-600 text-white flex justify-evenly items-center shadow-lg'>
+                                          className='mt-3 w-full h-12 rounded-3xl bg-green-600 text-white flex justify-evenly items-center shadow-lg'>
                                             {
                                               isLoading ? (
                                                 <ClipLoader color='#fff' size={20} />
@@ -167,19 +167,19 @@ const ModalAuth = ({ isModalOpen, setIsModalOpen }) => {
                                         />
                                         <button 
                                           type='submit'
-                                          className='mt-3 w-full h-12 rounded-3xl bg-red-600 text-white flex justify-evenly items-center shadow-lg'>
+                                          className='mt-3 w-full h-12 rounded-3xl bg-green-600 text-white flex justify-evenly items-center shadow-lg'>
                                           Login
                                         </button>
                                     </form>
                                     <p className='w-full text-right text-sm cursor-pointer mt-2'>Forgot Password?</p>
                                     <h2 className='w-full text-center font-bold'>Or</h2>
-                                    <button className='w-full h-12 rounded-3xl bg-red-600 text-white flex justify-center gap-2 items-center shadow-lg hover:shadow-2xl'>
+                                    <button className='w-full h-12 rounded-3xl bg-green-600 text-white flex justify-center gap-2 items-center shadow-lg hover:shadow-2xl'>
                                         <img src={googleIcon} alt="" className='w-8' />
                                         Login with google
                                     </button>
                                     <button
                                         onClick={toggleRegister} 
-                                        className='w-full h-12 rounded-3xl bg-red-600 text-white flex justify-center gap-2 items-center shadow-lg hover:shadow-2xl'>
+                                        className='w-full h-12 rounded-3xl bg-green-600 text-white flex justify-center gap-2 items-center shadow-lg hover:shadow-2xl'>
                                         Register
                                     </button>
                                 </div>
